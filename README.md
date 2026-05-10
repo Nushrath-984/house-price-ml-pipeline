@@ -1,17 +1,17 @@
 ## Implementing Gradient Descent Variants for House Price Prediction
 
-## 🎯 Objective
+##  Objective
 Build an end-to-end ML pipeline for house price prediction using Linear Regression and Neural Networks, comparing Gradient Descent variants (Batch, SGD, Mini-Batch, Momentum, RMSProp, Adam).
 
-## 📊 Dataset
+##  Dataset
 - California Housing Prices (Kaggle)  
 - Target: median_house_value  
 - [Download here](https://www.kaggle.com/datasets/camnugent/california-housing-prices)
 
-## ⚙️ Tech Stack
+##  Tech Stack
 Python, NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, Streamlit
 
-## 📅 Week Plan
+##  Week Plan
 - Week 1: Setup & EDA  
 - Week 2: Linear Regression + Batch GD  
 - Week 3: SGD & Mini-Batch GD  
