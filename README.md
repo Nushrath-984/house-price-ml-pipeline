@@ -20,3 +20,9 @@ Python, NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, Streamlit
 - Week 6: Model evaluation  
 - Week 7: Web app development  
 - Week 8: Documentation & deployment
+## Week 3 Results
+“Week 3: SGD & Mini-Batch GD”
+- Compared Batch Gradient Descent, Stochastic Gradient Descent (SGD), and Mini‑Batch Gradient Descent to highlight their differences in speed, stability, and accuracy.  
+- Visualizations showed Batch GD as smooth and stable, SGD as noisy but fast, and Mini‑Batch GD as a balanced compromise.  
+- A detailed comparison table has been saved in `results/week3_comparison.csv` for reference.
+
