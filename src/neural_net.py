@@ -102,3 +102,34 @@ class NeuralNetworkScratch:
         self.b2 = params['b2']
         self.W3 = params['W3']
         self.b3 = params['b3']
+    def backward(self, cache, y):
+        """
+        Computes gradients for all weights and biases.
+        Uses chain rule going backwards: output -> Layer2 -> Layer1
+        """
+        X, Z1, A1, Z2, A2, Z3 = cache
+        n = X.shape[0]
+
+        # Step 1: Output layer gradient
+        dZ3 = (2 / n) * (Z3 - y)
+        dW3 = A2.T @ dZ3
+        db3 = np.sum(dZ3, axis=0, keepdims=True)
+        dA2 = dZ3 @ self.W3.T
+
+        # Step 2: Layer 2 gradient
+        dZ2 = dA2 * self.relu_derivative(Z2)
+        dW2 = A1.T @ dZ2
+        db2 = np.sum(dZ2, axis=0, keepdims=True)
+        dA1 = dZ2 @ self.W2.T
+
+        # Step 3: Layer 1 gradient
+        dZ1 = dA1 * self.relu_derivative(Z1)
+        dW1 = X.T @ dZ1
+        db1 = np.sum(dZ1, axis=0, keepdims=True)
+
+        grads = {
+            'dW1': dW1, 'db1': db1,
+            'dW2': dW2, 'db2': db2,
+            'dW3': dW3, 'db3': db3
+        }
+        return grads
