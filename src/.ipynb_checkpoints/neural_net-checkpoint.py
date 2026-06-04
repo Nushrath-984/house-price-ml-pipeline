@@ -13,11 +13,15 @@ class NeuralNetworkScratch:
       - Member 3: training loop uses get_params() and set_params()
     """
 
+<<<<<<< HEAD
     def __init__(self, input_size, hidden1=64, hidden2=32, output_size=1,
              num_layers=2, batch_size=32, learning_rate=0.01):
         self.num_layers = num_layers
         self.batch_size = batch_size
         self.learning_rate = learning_rate
+=======
+    def __init__(self, input_size, hidden1=64, hidden2=32, output_size=1):
+>>>>>>> 362ec0da8f09ced70adf0f702a9b16c922ecc7fc
         np.random.seed(42)  # ensures reproducibility across all members
 
         # Layer 1: input → 64
@@ -137,6 +141,7 @@ class NeuralNetworkScratch:
             'dW3': dW3, 'db3': db3
         }
         return grads
+<<<<<<< HEAD
     def fit(self, X, y, epochs=100, learning_rate=0.01):
         """
         Simple training loop using Batch Gradient Descent.
@@ -164,3 +169,5 @@ class NeuralNetworkScratch:
         """
         y_pred, _ = self.forward(X)
         return y_pred
+=======
+>>>>>>> 362ec0da8f09ced70adf0f702a9b16c922ecc7fc
