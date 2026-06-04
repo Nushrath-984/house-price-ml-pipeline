@@ -1,4 +1,0 @@
-Variant,Final Loss,Speed,Stability,Accuracy
-Batch GD,4864519590.228817,Slow (full dataset),High,Good baseline
-SGD,4742934975.895429,Fast (per sample),Low (noisy),Fluctuates
-Mini-Batch GD,2560636206988.2246,Moderate (per batch),Medium,Balanced
