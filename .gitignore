@@ -1,6 +1,5 @@
 venv/ 
-.ipynb_checkpoints/ 
 __pycache__/ 
 *.pyc 
-data/final_prepared.csv 
-data/cleaned_housing.csv 
+.DS_Store 
+.ipynb_checkpoints/ 
