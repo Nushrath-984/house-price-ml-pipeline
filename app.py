@@ -6,6 +6,45 @@ import joblib
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import __main__ as _main
+
+def _relu(x):
+    return np.maximum(0, x)
+
+class SavedModel:
+    def __init__(self, w, b):
+        self.w = w; self.b = b
+    def predict(self, X):
+        return np.array(X) @ self.w + self.b
+
+class NNModel:
+    def __init__(self, W1, b1, W2, b2, W3, b3):
+        self.W1=W1; self.b1=b1
+        self.W2=W2; self.b2=b2
+        self.W3=W3; self.b3=b3
+    def predict(self, X):
+        X = np.array(X)
+        a1 = _relu(X @ self.W1 + self.b1)
+        a2 = _relu(a1 @ self.W2 + self.b2)
+        return (a2 @ self.W3 + self.b3).flatten()
+
+# Fix: joblib saved these as __main__.SavedModel / NNModel
+_main.SavedModel = SavedModel
+_main.NNModel    = NNModel
+
+# Manual standardization — the saved scaler was fit on pre-normalized data
+# so we use the true CA housing raw feature statistics instead
+_FEAT_MEAN = np.array([-119.5697,  35.6319,  28.6394,
+                        2635.763,  537.8705, 1425.4767,
+                         499.5397,   3.8707,
+                           5.4290,   0.2126,    3.0706])
+_FEAT_STD  = np.array([  2.0035,   2.1359,  12.5856,
+                        2181.6,    421.5,   1132.5,
+                         382.3,     1.8994,
+                           2.3704,   0.0576,  10.3862])
+
+def manual_scale(X_raw):
+    return (np.array(X_raw, dtype=float) - _FEAT_MEAN) / _FEAT_STD
 
 st.set_page_config(
     page_title="House Price Predictor",
@@ -212,17 +251,11 @@ with tab1:
         rooms_per_hh = total_rooms    / max(households, 1)
         bed_per_room = total_bedrooms / max(total_rooms, 1)
         pop_per_hh   = population     / max(households, 1)
-        ocean_map = {"NEAR BAY": 3.0, "<1H OCEAN": 0.0,
-                     "INLAND": 1.0, "NEAR OCEAN": 4.0, "ISLAND": 2.0}
-        ocean_val = ocean_map[ocean_proximity]
         X_raw = np.array([[longitude, latitude, housing_median_age,
                            total_rooms, total_bedrooms, population,
                            households, median_income,
-                           rooms_per_hh, bed_per_room, pop_per_hh,
-                           ocean_val]])
-        if scaler is not None:
-            X_raw = scaler.transform(X_raw)
-        return X_raw
+                           rooms_per_hh, bed_per_room, pop_per_hh]])
+        return manual_scale(X_raw)
 
     st.divider()
 
@@ -260,7 +293,11 @@ with tab1:
             with st.spinner(f"Running {selected}..."):
                 try:
                     X = build_features()
-                    price = float(np.array(model.predict(X)).flatten()[0])
+                    raw   = float(np.array(model.predict(X)).flatten()[0])
+                    # Hardcoded CA housing y statistics (y_mean/y_std npy files may be stale)
+                    _ym   = 206855.0
+                    _ys   = 115395.0
+                    price = raw * _ys + _ym
 
                     if price < 10_000 or price > 5_000_000:
                         st.warning(f"⚠️ Prediction seems unusual (${price:,.0f}). "
@@ -281,10 +318,13 @@ with tab1:
     if compare_btn and not has_error:
         with st.spinner("Running all models..."):
             X = build_features()
+            _ym2 = 206855.0
+            _ys2 = 115395.0
             rows = []
             for name, model in models.items():
                 try:
-                    p = float(np.array(model.predict(X)).flatten()[0])
+                    raw2 = float(np.array(model.predict(X)).flatten()[0])
+                    p    = raw2 * _ys2 + _ym2
                     status = "✅ Realistic" if 10_000 < p < 5_000_000 else "⚠️ Check model"
                     rows.append({"Model": name,
                                  "Predicted Price": f"${p:,.0f}",
