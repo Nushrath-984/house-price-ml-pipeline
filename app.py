@@ -170,8 +170,12 @@ st.markdown('<p class="sub-header">End-to-End ML Pipeline | Gradient Descent Var
             unsafe_allow_html=True)
 st.divider()
 
-tab1, tab2, tab3, tab4 = st.tabs([
-    "🔮 Predict", "📉 Loss Curves", "📊 Model Evaluation", "ℹ️ About"
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "🔮 Predict",
+    "📉 Loss Curves",
+    "📊 Model Evaluation",
+    "📈 Price Distribution",
+    "ℹ️ About"
 ])
 
 # ════════════════════════════════════════════════════════════════════
@@ -527,9 +531,87 @@ with tab3:
                     st.caption(f"⚠️ {label} not found")
 
 # ════════════════════════════════════════════════════════════════════
-# TAB 4 — ABOUT
+# TAB 4 — PRICE DISTRIBUTION
 # ════════════════════════════════════════════════════════════════════
 with tab4:
+    st.subheader("📈 California Housing Price Distribution")
+    st.caption("Distribution of median house values across the dataset.")
+
+    y_test_data = results.get("y_test")
+
+    if y_test_data is None:
+        st.warning("results/y_test.npy not found. Run retrain_all.py first.")
+    else:
+        col_d1, col_d2 = st.columns(2)
+
+        with col_d1:
+            fig, ax = plt.subplots(figsize=(6, 4))
+            ax.hist(y_test_data, bins=50,
+                    edgecolor="white", alpha=0.85)
+
+            ax.axvline(
+                y_test_data.mean(),
+                linestyle="--",
+                linewidth=2,
+                label=f"Mean: ${y_test_data.mean():,.0f}"
+            )
+
+            ax.axvline(
+                np.median(y_test_data),
+                linestyle="--",
+                linewidth=2,
+                label=f"Median: ${np.median(y_test_data):,.0f}"
+            )
+
+            ax.set_xlabel("House Price ($)")
+            ax.set_ylabel("Frequency")
+            ax.set_title("Price Distribution — Test Set")
+            ax.legend()
+            ax.grid(True, alpha=0.3)
+
+            st.pyplot(fig)
+            plt.close()
+
+        with col_d2:
+            bins = [0,100000,200000,300000,400000,500000,float("inf")]
+            labels = [
+                "<$100K",
+                "$100K–200K",
+                "$200K–300K",
+                "$300K–400K",
+                "$400K–500K",
+                ">$500K"
+            ]
+
+            counts = pd.cut(
+                y_test_data,
+                bins=bins,
+                labels=labels
+            ).value_counts().sort_index()
+
+            fig2, ax2 = plt.subplots(figsize=(6,4))
+            ax2.bar(labels, counts.values)
+
+            ax2.set_xlabel("Price Range")
+            ax2.set_ylabel("Number of Houses")
+            ax2.set_title("Houses by Price Range")
+
+            st.pyplot(fig2)
+            plt.close()
+
+        st.divider()
+
+        s1, s2, s3, s4 = st.columns(4)
+
+        s1.metric("Mean Price",
+                  f"${y_test_data.mean():,.0f}")
+        s2.metric("Median Price",
+                  f"${np.median(y_test_data):,.0f}")
+        s3.metric("Min Price",
+                  f"${y_test_data.min():,.0f}")
+        s4.metric("Max Price",
+                  f"${y_test_data.max():,.0f}")
+with tab5:
     st.subheader("📖 About This Project")
     col_a, col_b = st.columns(2)
     with col_a:
