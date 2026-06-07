@@ -55,28 +55,58 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
+html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
+
 .main-header {
-    font-size: 2.5rem; font-weight: 700;
-    color: #1f77b4; text-align: center; padding-bottom: 0.3rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center; padding-bottom: 0.3rem; line-height: 1.2;
 }
 .sub-header {
-    font-size: 1.05rem; color: #666;
-    text-align: center; margin-bottom: 1.2rem;
+    font-size: 1rem; color: #64748b;
+    text-align: center; margin-bottom: 0.3rem; font-weight: 300;
+}
+.team-tag {
+    text-align: center; margin-bottom: 1rem;
+}
+.team-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white; padding: 0.3rem 1.5rem;
+    border-radius: 50px; font-size: 0.8rem; font-weight: 600;
 }
 .section-label {
-    background-color: #f0f4ff;
-    border-left: 4px solid #1f77b4;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white; padding: 0.25rem 1rem;
+    border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+    display: inline-block; margin-bottom: 0.8rem;
 }
 .predict-card {
-    background: linear-gradient(135deg, #e8f4fd, #f0f8e8);
-    border-radius: 12px;
-    padding: 1.2rem 1.5rem;
-    margin-top: 1rem;
-    border: 1px solid #c8e6c9;
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    border-radius: 20px; padding: 2rem; text-align: center;
+    color: white; margin: 1rem 0;
+    box-shadow: 0 20px 60px #0f346030;
+}
+.price-big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem; color: #ffd700; display: block; margin: 0.5rem 0;
+}
+.price-range { font-size: 0.9rem; color: #94a3b8; margin-top: 0.5rem; }
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px; background: #f1f5f9; padding: 6px; border-radius: 12px;
+}
+.stTabs [data-baseweb="tab"] {
+    border-radius: 8px; padding: 8px 16px; font-weight: 500;
+}
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: white !important;
+}
+.stButton > button {
+    border-radius: 50px !important; font-weight: 600 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -144,7 +174,11 @@ results = load_results()
 
 # ── Sidebar ───────────────────────────────────────────────────────
 with st.sidebar:
-    st.title("🏠 House Price ML")
+    st.markdown("""
+    <div style='background:linear-gradient(135deg,#667eea,#764ba2);padding:1rem;border-radius:12px;text-align:center;margin-bottom:1rem;'>
+    <div style='color:white;font-size:1.3rem;font-weight:700;'>🏠 House Price ML</div>
+    
+    </div>""", unsafe_allow_html=True)
     st.markdown("---")
     st.subheader("🤖 Select Model")
     selected = st.selectbox("Optimizer / Model:", list(MODEL_PATHS.keys()))
@@ -154,19 +188,24 @@ with st.sidebar:
     loaded_count = 0
     for name in MODEL_PATHS:
         if name in models:
-            st.caption(f"✅ {name}")
+            st.markdown(f"<div style='background:#e8f5e9;border-radius:6px;padding:3px 8px;margin:2px 0;font-size:0.78rem;'>✅ <b>{name}</b></div>", unsafe_allow_html=True)
             loaded_count += 1
         else:
-            st.caption(f"❌ {name} — not found")
+            st.markdown(f"<div style='background:#ffebee;border-radius:6px;padding:3px 8px;margin:2px 0;font-size:0.78rem;'>❌ {name}</div>", unsafe_allow_html=True)
     st.markdown("---")
     st.caption(f"**{loaded_count}/{len(MODEL_PATHS)} models loaded**")
     st.caption("📊 California Housing | 15,967 samples")
     st.caption("🔧 NumPy · Scikit-learn · Streamlit")
 
 # ── Header ────────────────────────────────────────────────────────
-st.markdown('<p class="main-header">🏠 House Price Prediction Dashboard</p>',
-            unsafe_allow_html=True)
-st.markdown('<p class="sub-header">End-to-End ML Pipeline | Gradient Descent Variants from Scratch</p>',
+st.markdown("""
+<div style='text-align:center;padding:1.5rem 0 0.5rem 0;'>
+    <div style='font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:#667eea;font-weight:600;margin-bottom:0.5rem;'>DST CURIE AI Internship 2026</div>
+    <div style='font-family:DM Serif Display,serif;font-size:3.2rem;font-weight:700;color:#1a1a2e;line-height:1.1;'>🏡 California House Price Predictor</div>
+    <div style='width:80px;height:4px;background:linear-gradient(135deg,#667eea,#764ba2);margin:0.8rem auto;border-radius:4px;'></div>
+</div>
+""", unsafe_allow_html=True)
+st.markdown('<p class="sub-header">End-to-End ML Pipeline · Gradient Descent Variants from Scratch · NumPy Only</p>',
             unsafe_allow_html=True)
 st.divider()
 
@@ -307,11 +346,17 @@ with tab1:
                         st.warning(f"⚠️ Prediction seems unusual (${price:,.0f}). "
                                    "Try retraining models with retrain_all.py.")
                     else:
-                        st.success("✅ Prediction complete!")
-                        m1, m2, m3 = st.columns(3)
-                        m1.metric("💰 Predicted Price", f"${price:,.0f}")
-                        m2.metric("📉 Lower (−10%)",    f"${price*0.9:,.0f}")
-                        m3.metric("📈 Upper (+10%)",    f"${price*1.1:,.0f}")
+                        st.markdown(f"""
+                        <div class="predict-card">
+                            <div style='font-size:0.9rem; opacity:0.8;'>
+                                {selected} predicts
+                            </div>
+                            <span class="price-big">${price:,.0f}</span>
+                            <div class="price-range">
+                                Range: ${price*0.9:,.0f} — ${price*1.1:,.0f} &nbsp;(±10%)
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
                         st.caption(
                             f"Model: **{selected}** | "
                             f"Features: 12 | "
@@ -590,7 +635,11 @@ with tab4:
             ).value_counts().sort_index()
 
             fig2, ax2 = plt.subplots(figsize=(6,4))
-            ax2.bar(labels, counts.values)
+            colors_bar = ["#d32f2f","#f57c00","#fbc02d","#388e3c","#1976d2","#7b1fa2"]
+            ax2.bar(labels, counts.values, color=colors_bar, edgecolor="white", alpha=0.9)
+            for i, v in enumerate(counts.values):
+                ax2.text(i, v + 2, str(v), ha="center", fontsize=8)
+            ax2.tick_params(axis="x", rotation=30)
 
             ax2.set_xlabel("Price Range")
             ax2.set_ylabel("Number of Houses")
