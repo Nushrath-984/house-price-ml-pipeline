@@ -53,61 +53,150 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
 html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
-
 .main-header {
     font-family: 'DM Serif Display', serif;
     font-size: 3rem;
+    font-weight: 900;
     background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center; padding-bottom: 0.3rem; line-height: 1.2;
+    letter-spacing: -0.01em;
 }
-.sub-header {
-    font-size: 1rem; color: #64748b;
-    text-align: center; margin-bottom: 0.3rem; font-weight: 300;
+.sub-header { font-size: 1rem; color: #64748b; text-align: center; margin-bottom: 0.3rem; font-weight: 300; }
+
+/* NEW: make every Streamlit subheader/header bold across all tabs */
+h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    font-weight: 800 !important;
+    letter-spacing: -0.01em;
 }
-.team-tag {
-    text-align: center; margin-bottom: 1rem;
+
+/* NEW: animated gradient underline on every subheader for a more premium feel */
+.stMarkdown h3::after {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 3px;
+    margin-top: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
 }
-.team-badge {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white; padding: 0.3rem 1.5rem;
-    border-radius: 50px; font-size: 0.8rem; font-weight: 600;
-}
-.section-label {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white; padding: 0.25rem 1rem;
-    border-radius: 50px; font-size: 0.8rem; font-weight: 600;
-    display: inline-block; margin-bottom: 0.8rem;
-}
+.sub-header { font-size: 1rem; color: #64748b; text-align: center; margin-bottom: 0.3rem; font-weight: 300; }
+.team-tag { text-align: center; margin-bottom: 1rem; }
+.team-badge { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 0.35rem 1.8rem; border-radius: 50px; font-size: 0.82rem; font-weight: 600; }
+.section-label { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 0.28rem 1.1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin-bottom: 0.9rem; box-shadow: 0 2px 8px #667eea40; }
 .predict-card {
-    background: linear-gradient(135deg, #0f3460, #16213e);
-    border-radius: 20px; padding: 2rem; text-align: center;
-    color: white; margin: 1rem 0;
-    box-shadow: 0 20px 60px #0f346030;
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #1a1a2e 100%);
+    border-radius: 24px; padding: 2.2rem 2rem; text-align: center; color: white;
+    margin: 1.2rem 0; box-shadow: 0 24px 64px #0f346040; border: 1px solid #ffffff10;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+.predict-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 32px 80px #0f346060;
+}
+.predict-card-label { font-size: 0.85rem; opacity: 0.65; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700; }
 .price-big {
-    font-family: 'DM Serif Display', serif;
-    font-size: 3.5rem; color: #ffd700; display: block; margin: 0.5rem 0;
+    font-family: 'DM Serif Display', serif; font-size: 3.8rem; font-weight: 900;
+    color: #ffd700; display: block; margin: 0.3rem 0; text-shadow: 0 0 40px #ffd70050;
+    animation: priceReveal 0.5s ease;
 }
-.price-range { font-size: 0.9rem; color: #94a3b8; margin-top: 0.5rem; }
-.stTabs [data-baseweb="tab-list"] {
-    gap: 8px; background: #f1f5f9; padding: 6px; border-radius: 12px;
+@keyframes priceReveal {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
 }
+.price-range { font-size: 0.9rem; color: #cbd5e1; font-weight: 600; margin-top: 0.6rem; }
+.price-divider { width: 50px; height: 2px; background: linear-gradient(90deg, #667eea, #764ba2); margin: 0.8rem auto; border-radius: 2px; }
+.stTabs [data-baseweb="tab-list"] { gap: 6px; background: #f1f5f9; padding: 5px; border-radius: 14px; border: 1px solid #e2e8f0; }
 .stTabs [data-baseweb="tab"] {
-    border-radius: 8px; padding: 8px 16px; font-weight: 500;
+    border-radius: 10px; padding: 9px 20px; font-weight: 700; font-size: 0.92rem;
+    transition: all 0.2s ease;
 }
+.stTabs [data-baseweb="tab"]:hover { background: #e8ecff; }
 .stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, #667eea, #764ba2) !important;
-    color: white !important;
+    background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important;
+    box-shadow: 0 4px 12px #667eea40 !important; transform: scale(1.03);
 }
-.stButton > button {
-    border-radius: 50px !important; font-weight: 600 !important;
+/* ===== GLOBAL FIX v2: targets ALL descendant text, not just wrappers ===== */
+
+/* st.caption() — the * targets every nested p/span/small Streamlit generates internally */
+[data-testid="stCaptionContainer"] * {
+    color: #334155 !important;
+    font-weight: 600 !important;
+    -webkit-text-fill-color: #334155 !important;
 }
+[data-testid="stCaptionContainer"] {
+    font-size: 0.9rem !important;
+}
+
+/* st.image(..., caption=...) renders its caption via stCaptionContainer too, covered above,
+   but also has its own figcaption-style wrapper in some versions — cover both */
+[data-testid="stImageCaption"] *,
+figcaption * {
+    color: #334155 !important;
+    font-weight: 600 !important;
+}
+
+/* st.metric() label + value + delta */
+[data-testid="stMetricLabel"] * {
+    color: #334155 !important;
+    font-weight: 700 !important;
+}
+[data-testid="stMetricValue"] * {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+}
+
+/* widget labels: number_input, slider, selectbox titles */
+[data-testid="stWidgetLabel"] * {
+    color: #1e293b !important;
+    font-weight: 700 !important;
+}
+
+/* tooltip / help-icon popover text */
+[data-testid="stTooltipContent"] * {
+    color: #1e293b !important;
+}
+
+/* expander header ("View Derived Features...") */
+[data-testid="stExpander"] summary * {
+    color: #1e293b !important;
+    font-weight: 700 !important;
+}
+
+/* generic markdown paragraph text app-wide */
+[data-testid="stMarkdownContainer"] p {
+    color: #1e293b !important;
+}
+
+/* ===== st.table() — REAL html table, this is the one to use instead of st.dataframe() ===== */
+[data-testid="stTable"] table thead tr th {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    background-color: #eef1f8 !important;
+    border-bottom: 2px solid #c7d2fe !important;
+}
+[data-testid="stTable"] table tbody tr td {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+}
+[data-testid="stTable"] table tbody tr:hover {
+    background-color: #f8faff !important;
+}
+
+/* ===== st.dataframe() fallback note =====
+   st.dataframe() draws text on a <canvas> — CSS CANNOT change canvas pixel color.
+   Every st.dataframe() call below has been switched to st.table() in Block 2,
+   which is why the rule above (not a dataframe rule) is what now applies. */
+            
+.stButton > button { border-radius: 50px !important; font-weight: 600 !important; }
+div[data-testid="metric-container"] { background: linear-gradient(135deg, #f8faff, #f3f0ff); border: 1px solid #e0e7ff; border-radius: 14px; padding: 1rem; }
+footer { visibility: hidden; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -175,38 +264,38 @@ results = load_results()
 # ── Sidebar ───────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style='background:linear-gradient(135deg,#667eea,#764ba2);padding:1rem;border-radius:12px;text-align:center;margin-bottom:1rem;'>
-    <div style='color:white;font-size:1.3rem;font-weight:700;'>🏠 House Price ML</div>
-    
-    </div>""", unsafe_allow_html=True)
-    st.markdown("---")
-    st.subheader("🤖 Select Model")
-    selected = st.selectbox("Optimizer / Model:", list(MODEL_PATHS.keys()))
-    st.info(MODEL_DESC.get(selected, ""))
-    st.markdown("---")
-    st.subheader("📦 Model Status")
+    <div style='text-align:center; padding:1.2rem 0 0.8rem 0;'>
+        <div style='font-size:2.8rem;'>🏡</div>
+        <div style='font-size:1.15rem; font-weight:700; color:#1a1a2e;'>House Price ML</div>
+        <div style='font-size:0.75rem; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;'>California Housing</div>
+        <div style='width:40px; height:2px; background:linear-gradient(90deg,#667eea,#764ba2); margin:0.6rem auto 0 auto; border-radius:2px;'></div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.divider()
+    st.markdown("<div style='font-size:0.82rem; font-weight:700; color:#374151; margin-bottom:0.4rem;'>🤖 Select Model</div>", unsafe_allow_html=True)
+    selected = st.selectbox("Optimizer / Model:", list(MODEL_PATHS.keys()), label_visibility="collapsed")
+    st.markdown(f"""<div style='background:linear-gradient(135deg,#f0f4ff,#f8f0ff); border-left:3px solid #667eea; border-radius:0 10px 10px 0; padding:0.7rem 0.9rem; font-size:0.85rem; font-weight:600; color:#3b0764; margin:0.3rem 0 0.5rem 0; line-height:1.5;'>{MODEL_DESC.get(selected, "")}</div>""", unsafe_allow_html=True)
+    st.divider()
+    st.markdown("<div style='font-size:0.82rem; font-weight:700; color:#374151; margin-bottom:0.5rem;'>📦 Model Status</div>", unsafe_allow_html=True)
     loaded_count = 0
     for name in MODEL_PATHS:
         if name in models:
-            st.markdown(f"<div style='background:#e8f5e9;border-radius:6px;padding:3px 8px;margin:2px 0;font-size:0.78rem;'>✅ <b>{name}</b></div>", unsafe_allow_html=True)
+            st.markdown(f"""<div style='background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:4px 10px; margin:3px 0; font-size:0.79rem; color:#15803d;'>✅ <b>{name}</b></div>""", unsafe_allow_html=True)
             loaded_count += 1
         else:
-            st.markdown(f"<div style='background:#ffebee;border-radius:6px;padding:3px 8px;margin:2px 0;font-size:0.78rem;'>❌ {name}</div>", unsafe_allow_html=True)
-    st.markdown("---")
-    st.caption(f"**{loaded_count}/{len(MODEL_PATHS)} models loaded**")
-    st.caption("📊 California Housing | 15,967 samples")
-    st.caption("🔧 NumPy · Scikit-learn · Streamlit")
-
+            st.markdown(f"""<div style='background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:4px 10px; margin:3px 0; font-size:0.79rem; color:#dc2626;'>❌ {name}</div>""", unsafe_allow_html=True)
+    st.divider()
+    st.markdown(f"""<div style='font-size:0.78rem; color:#334155; font-weight:600; line-height:2.1;'>📊 <b>{loaded_count}/{len(MODEL_PATHS)}</b> models loaded<br>🗃️ 15,967 training samples<br>🔢 11 features (9 raw + 3 engineered)<br>🛠️ NumPy · Pandas · Streamlit<br>🎓 DST CURIE AI Internship 2026</div>""", unsafe_allow_html=True)
 # ── Header ────────────────────────────────────────────────────────
 st.markdown("""
-<div style='text-align:center;padding:1.5rem 0 0.5rem 0;'>
-    <div style='font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:#667eea;font-weight:600;margin-bottom:0.5rem;'>DST CURIE AI Internship 2026</div>
-    <div style='font-family:DM Serif Display,serif;font-size:3.2rem;font-weight:700;color:#1a1a2e;line-height:1.1;'>🏡 California House Price Predictor</div>
-    <div style='width:80px;height:4px;background:linear-gradient(135deg,#667eea,#764ba2);margin:0.8rem auto;border-radius:4px;'></div>
+<div style='text-align:center; padding:2rem 0 0.8rem 0;'>
+    <div style='font-size:0.78rem; letter-spacing:5px; text-transform:uppercase; color:#667eea; font-weight:700; margin-bottom:0.6rem;'>🎓 DST CURIE AI Internship 2026</div>
+    <div style='font-family:"DM Serif Display",serif; font-size:3rem; font-weight:700; color:#1a1a2e; line-height:1.1; margin-bottom:0.6rem;'>🏡 California House Price Predictor</div>
+    <div style='font-size:0.95rem; color:#475569; font-weight:600; margin-bottom:0.8rem;'>End-to-End ML Pipeline &nbsp;·&nbsp; Gradient Descent from Scratch &nbsp;·&nbsp; NumPy Only</div>
+    <div style='width:70px; height:3px; background:linear-gradient(90deg,#667eea,#764ba2); margin:0 auto 1rem auto; border-radius:3px;'></div>
+    <span style='background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:0.35rem 1.6rem; border-radius:50px; font-size:0.82rem; font-weight:700; letter-spacing:0.02em;'>🤖 7 Models &nbsp;·&nbsp; Built 100% from Scratch in NumPy</span>
 </div>
 """, unsafe_allow_html=True)
-st.markdown('<p class="sub-header">End-to-End ML Pipeline · Gradient Descent Variants from Scratch · NumPy Only</p>',
-            unsafe_allow_html=True)
 st.divider()
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -347,20 +436,19 @@ with tab1:
                                    "Try retraining models with retrain_all.py.")
                     else:
                         st.markdown(f"""
-                        <div class="predict-card">
-                            <div style='font-size:0.9rem; opacity:0.8;'>
-                                {selected} predicts
-                            </div>
-                            <span class="price-big">${price:,.0f}</span>
-                            <div class="price-range">
-                                Range: ${price*0.9:,.0f} — ${price*1.1:,.0f} &nbsp;(±10%)
-                            </div>
-                        </div>
-                        """, unsafe_allow_html=True)
+                                                                  <div class="predict-card">
+                                                                              <div class="predict-card-label">🤖 {selected} predicts</div>
+                                                                              <span class="price-big">${price:,.0f}</span>
+                                                                              <div class="price-divider"></div>
+                                                                              <div class="price-range">
+                                                                                  📉 Low: ${price*0.9:,.0f} &nbsp;|&nbsp; 📈 High: ${price*1.1:,.0f} &nbsp;(±10%)
+                                                                              </div>
+                                                                  </div>
+                                                                  """, unsafe_allow_html=True)
                         st.caption(
                             f"Model: **{selected}** | "
                             f"Features: 12 | "
-                            f"Dataset: California Housing (15,967 samples)")
+                            f"Dataset: Ccalifornia Housing (15,967 samples)")
                 except Exception as e:
                     st.error(f"Prediction error: {e}")
 
@@ -387,9 +475,7 @@ with tab1:
 
             df = pd.DataFrame(rows)
             st.subheader("⚖️ All Model Predictions")
-            st.dataframe(df[["Model", "Predicted Price", "Status"]],
-                         use_container_width=True, hide_index=True)
-
+            st.table(df[["Model", "Predicted Price", "Status"]].set_index("Model"))
             # Only chart realistic predictions
             valid = df[(df["Raw"] > 10_000) & (df["Raw"] < 5_000_000)]
             if not valid.empty:
@@ -428,9 +514,10 @@ with tab2:
             with cols[i % 2]:
                 fig, ax = plt.subplots(figsize=(5, 2.8))
                 ax.plot(loss, color=colors[i % len(colors)], linewidth=1.8)
-                ax.set_title(name, fontsize=11, fontweight="bold")
-                ax.set_xlabel("Epoch")
-                ax.set_ylabel("MSE Loss")
+                ax.set_title(name, fontsize=12, fontweight="bold", color="#0f172a")
+                ax.set_xlabel("Epoch", fontsize=10, fontweight="bold", color="#1e293b")
+                ax.set_ylabel("MSE Loss", fontsize=10, fontweight="bold", color="#1e293b")
+                ax.tick_params(axis='both', labelsize=9, colors="#1e293b")
                 ax.grid(True, alpha=0.3)
                 final = loss[-1]
                 ax.annotate(f"Final: {final:,.0f}",
@@ -450,9 +537,10 @@ with tab2:
             display = loss[:300] if len(loss) > 300 else loss
             ax.plot(display, label=name,
                     color=colors[i % len(colors)], linewidth=1.8, alpha=0.85)
-        ax.set_xlabel("Epoch")
-        ax.set_ylabel("MSE Loss")
-        ax.set_title("Optimizer Convergence Comparison", fontweight="bold")
+        ax.set_xlabel("Epoch", fontsize=11, fontweight="bold", color="#1e293b")
+        ax.set_ylabel("MSE Loss", fontsize=11, fontweight="bold", color="#1e293b")
+        ax.set_title("Optimizer Convergence Comparison", fontweight="bold", color="#0f172a")
+        ax.tick_params(axis='both', labelsize=9, colors="#1e293b")
         ax.legend(loc="upper right", fontsize=9)
         ax.grid(True, alpha=0.3)
         plt.tight_layout()
@@ -470,8 +558,7 @@ with tab2:
                 "Epochs": len(loss),
                 "Reduction %": f"{(1 - loss[-1]/loss[0])*100:.1f}%"
             })
-        st.dataframe(pd.DataFrame(summary_rows),
-                     use_container_width=True, hide_index=True)
+        st.table(pd.DataFrame(summary_rows).set_index("Optimizer"))
     else:
         st.warning("No loss .npy files found in results/. Run retrain_all.py first.")
 
@@ -505,8 +592,7 @@ with tab3:
         if y_pred_nn is not None:
             rows.append(get_metrics(y_test, y_pred_nn, "Neural Network"))
         if rows:
-            st.dataframe(pd.DataFrame(rows),
-                         use_container_width=True, hide_index=True)
+            st.table(pd.DataFrame(rows).set_index("Model"))
             st.caption("R² Score: 1.0 = perfect, 0.0 = predicts mean only. "
                        "Higher is better.")
 
@@ -531,9 +617,10 @@ with tab3:
                     mx = max(y_test.max(), y_pred.max())
                     ax.plot([mn,mx],[mn,mx], "r--", linewidth=1.5,
                             label="Perfect prediction")
-                    ax.set_xlabel("Actual Price ($)")
-                    ax.set_ylabel("Predicted Price ($)")
-                    ax.set_title(name, fontweight="bold")
+                    ax.set_xlabel("Actual Price ($)", fontsize=10, fontweight="bold", color="#1e293b")
+                    ax.set_ylabel("Predicted Price ($)", fontsize=10, fontweight="bold", color="#1e293b")
+                    ax.set_title(name, fontweight="bold", color="#0f172a")
+                    ax.tick_params(axis='both', labelsize=9, colors="#1e293b")
                     ax.legend(fontsize=8)
                     ax.grid(True, alpha=0.3)
                     plt.tight_layout()
@@ -549,10 +636,11 @@ with tab3:
                     edgecolor="white", alpha=0.8)
             ax.axvline(0, color="red", linestyle="--", linewidth=1.5,
                        label="Zero residual (perfect)")
-            ax.set_xlabel("Residual = Actual − Predicted ($)")
-            ax.set_ylabel("Frequency")
+            ax.set_xlabel("Residual = Actual − Predicted ($)", fontsize=11, fontweight="bold", color="#1e293b")
+            ax.set_ylabel("Frequency", fontsize=11, fontweight="bold", color="#1e293b")
+            ax.tick_params(axis='both', labelsize=9, colors="#1e293b")
             ax.set_title("Residual Distribution — Adam Linear Model",
-                         fontweight="bold")
+                         fontweight="bold", color="#0f172a")
             ax.legend()
             ax.grid(True, alpha=0.3)
             plt.tight_layout()
@@ -608,9 +696,10 @@ with tab4:
                 label=f"Median: ${np.median(y_test_data):,.0f}"
             )
 
-            ax.set_xlabel("House Price ($)")
-            ax.set_ylabel("Frequency")
-            ax.set_title("Price Distribution — Test Set")
+            ax.set_xlabel("House Price ($)", fontsize=11, fontweight="bold", color="#1e293b")
+            ax.set_ylabel("Frequency", fontsize=11, fontweight="bold", color="#1e293b")
+            ax.tick_params(axis='both', labelsize=9, colors="#1e293b")
+            ax.set_title("Price Distribution — Test Set", fontweight="bold", color="#0f172a")
             ax.legend()
             ax.grid(True, alpha=0.3)
 
@@ -641,10 +730,10 @@ with tab4:
                 ax2.text(i, v + 2, str(v), ha="center", fontsize=8)
             ax2.tick_params(axis="x", rotation=30)
 
-            ax2.set_xlabel("Price Range")
-            ax2.set_ylabel("Number of Houses")
-            ax2.set_title("Houses by Price Range")
-
+            ax2.set_xlabel("Price Range", fontsize=11, fontweight="bold", color="#1e293b")
+            ax2.set_ylabel("Number of Houses", fontsize=11, fontweight="bold", color="#1e293b")
+            ax2.tick_params(axis='both', labelsize=9, colors="#1e293b")
+            ax2.set_title("Houses by Price Range", fontweight="bold", color="#0f172a")
             st.pyplot(fig2)
             plt.close()
 
@@ -705,7 +794,7 @@ implementing all gradient descent optimizers from scratch — no scikit-learn fo
         with col_i:
             st.markdown(f"**{name}**  \n{status}")
         with col_j:
-            st.caption(desc)
+            st.markdown(f"<span style='color:#334155; font-weight:600; font-size:0.9rem;'>{desc}</span>", unsafe_allow_html=True)
 
     st.divider()
     st.subheader("📐 Feature Engineering")
@@ -718,4 +807,4 @@ implementing all gradient descent optimizers from scratch — no scikit-learn fo
                 "Captures bedroom density",
                 "Captures household crowding"]
     }
-    st.dataframe(pd.DataFrame(fe_data), use_container_width=True, hide_index=True)
+    st.table(pd.DataFrame(fe_data).set_index("Feature"))
