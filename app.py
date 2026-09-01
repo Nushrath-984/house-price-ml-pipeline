@@ -256,7 +256,11 @@ def load_results():
         if os.path.exists(path):
             res[f"loss_{name}"] = np.load(path)
     return res
-
+if not os.path.exists("models/linear_adam.pkl"):
+    import subprocess, sys
+    with st.spinner("First run — training all models, please wait 2-3 minutes..."):
+        subprocess.run([sys.executable, "retrain_all.py"], check=True)
+    st.rerun()
 models  = load_models()
 scaler  = load_scaler()
 results = load_results()
